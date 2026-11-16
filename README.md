@@ -51,14 +51,14 @@ Per ticker and day: daily return, SMA 20/50/200, 52-week high and drawdown, and 
 
 Sample output from a real run (`SELECT * FROM marts.latest_snapshot`, 13 Nov 2026):
 
-| ticker | adj_close | daily % | drawdown 52w % | volatility 20d % | below SMA200 | alert |
+| Ticker | Adj. close | Daily % | Drawdown 52w % | Volatility 20d % | Below SMA 200 | Drawdown alert |
 |---|---:|---:|---:|---:|:-:|:-:|
-| M.RO | 9.98 | -1.38 | -30.11 | 32.12 | ✔ | 🔔 |
-| BRD.RO | 32.15 | -0.46 | -17.56 | 33.08 | | |
-| SNN.RO | 61.00 | 0.00 | -16.44 | 20.67 | ✔ | 🔔 |
-| TGN.RO | 87.00 | 0.00 | -12.83 | 22.34 | ✔ | 🔔 |
-| H2O.RO | 191.40 | -0.62 | -11.94 | 26.59 | | |
-| TLV.RO | 37.00 | 0.00 | -2.63 | 12.96 | | |
+| M.RO | 9.98 | -1.38 | -30.11 | 32.12 | yes | yes |
+| BRD.RO | 32.15 | -0.46 | -17.56 | 33.08 | no | no |
+| SNN.RO | 61.00 | 0.00 | -16.44 | 20.67 | yes | yes |
+| TGN.RO | 87.00 | 0.00 | -12.83 | 22.34 | yes | yes |
+| H2O.RO | 191.40 | -0.62 | -11.94 | 26.59 | no | no |
+| TLV.RO | 37.00 | 0.00 | -2.63 | 12.96 | no | no |
 
 *Not investment advice. This is a data engineering project.*
 
