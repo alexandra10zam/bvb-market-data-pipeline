@@ -1,0 +1,40 @@
+# Local stack: PostgreSQL warehouse + Airflow (standalone: scheduler, webserver, triggerer)
+#   docker compose up --build
+#   Airflow UI: http://localhost:8081  (user admin, password printed in `docker compose logs airflow`)
+#   Warehouse:  postgresql://bvb:bvb@localhost:5433/bvb
+services:
+  warehouse:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: bvb
+      POSTGRES_USER: bvb
+      POSTGRES_PASSWORD: bvb
+    ports:
+      - "${WAREHOUSE_PORT:-5433}:5432"
+    volumes:
+      - warehouse:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bvb -d bvb"]
+      interval: 5s
+      retries: 10
+
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    command: standalone
+    depends_on:
+      warehouse:
+        condition: service_healthy
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DEFAULT_TIMEZONE: Europe/Bucharest
+      AIRFLOW_CONN_BVB_WAREHOUSE: postgresql://bvb:bvb@warehouse:5432/bvb
+      BVB_DATABASE_URL: postgresql+psycopg://bvb:bvb@warehouse:5432/bvb
+    volumes:
+      - ./dags:/opt/airflow/dags
+    ports:
+      - "${AIRFLOW_PORT:-8081}:8080"
+
+volumes:
+  warehouse:
